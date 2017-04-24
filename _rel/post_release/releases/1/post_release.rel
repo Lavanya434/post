@@ -7,6 +7,7 @@
           {public_key,"1.2"},
           {ssl,"8.0.2"},
           {epgsql,"3.3.0"},
+          {poolboy,"1.5.1"},
           {cowlib,"1.0.2"},
           {ranch,"1.2.1"},
           {cowboy,"1.0.4"},
