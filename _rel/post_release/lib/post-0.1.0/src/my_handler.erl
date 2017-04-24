@@ -28,17 +28,13 @@ welcome(Req, State) ->
   io:format("mailid is ~s\n", [Id]),
   {_, Pass} = lists:keyfind(<<"password">>, 1, KeyValues),
   io:format("password is ~s\n", [Pass]),
-Equery = equery(pool1, "insert into details values($1,$2)", [Id, Pass]) ,
-io:format("~p", [Equery]),
-Close = equery(pool1, "close, Conn"),
-io:format("connection closed ~s", [Close]),
-  
-  %%Close = epgsqla:close(C),
-  %%io:format("~s", [Close]),
+  SelectRes = equery(pool1, "insert into details values($1,$2)", [Id, Pass]) ,
+  io:format("~p", [SelectRes]),
+  Close = equery(pool1, "close, Conn"),
+  io:format("connection closed ~s", [Close]),
   {true, Req3, State}.
-
-
 equery(pool1, "insert into details values($1,$2)", [Id, Pass]) ->
-    poolboy:transaction(pool1, fun(Worker) -> gen_server:call(Worker, {equery, "insert into details values($1,$2)", [Id, Pass]}) end).
+  poolboy:transaction(pool1, fun(Worker) -> gen_server:call(Worker, {equery, "insert into details values($1,$2)", [Id, Pass]}) end).
+
 equery(pool1, "close, Conn") ->
   poolboy:transaction(pool1, fun(Worker) -> gen_server:call(Worker, {equery, "close, Conn"}) end ).
