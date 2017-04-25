@@ -36,7 +36,7 @@ handle_call({equery, Stmt, Params}, _From, #state{conn=Conn}=State) ->
             {ok , _} ->
                 {reply, epgsql:equery(Conn, Stmt, Params), State};
             {error, Error} ->
-                Error
+              {reply, Error, State}  
     end;
 handle_call(_Request, _From, State) ->
     {reply, ok, State}.

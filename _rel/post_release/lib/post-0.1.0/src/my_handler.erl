@@ -33,6 +33,7 @@ welcome(Req, State) ->
   Close = equery(pool1, "close, Conn"),
   io:format("connection closed ~s", [Close]),
   {true, Req3, State}.
+  
 equery(pool1, "insert into details values($1,$2)", [Id, Pass]) ->
   poolboy:transaction(pool1, fun(Worker) -> gen_server:call(Worker, {equery, "insert into details values($1,$2)", [Id, Pass]}) end).
 
